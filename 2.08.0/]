@@ -7,22 +7,22 @@
 
 
 let svg = d3.select("#chart-area").append("svg")
-    .attr("width", "400")
-    .attr("height", "400");
+    .attr("width", 400)
+    .attr("height", 400);
 
 d3.json("data/buildings.json").then(function(data){
 
-    data.forEach(d => {
-        d.height = +d.height;
-    })
 
-    let x_scale = d3.scaleBand()
-        .domain(['A', 'B', 'C', 'D', 'E','F', 'G'])
+    let band_scaler = d3.scaleBand()
+        .domain(["Burj Khalifa", "Shanghai Tower", 
+                "Abraj Al-Bait Clock Tower", "Ping",
+                "Lotte World Tower", "One Wold TC",
+                "Guangzhou"])
         .range([0, 400])
         .paddingInner(0.3)
         .paddingOuter(0.3);
 
-    let y_scale = d3.scaleLinear()
+    let linear_scaler = d3.scaleLinear()
         .domain([0, 828])
         .range([0, 400]);
 
@@ -31,12 +31,12 @@ d3.json("data/buildings.json").then(function(data){
         .enter()
         .append("rect")
         .attr("y", 20)
-        .attr("x", function(d){
-            return x_scale(d.name);
+        .attr("x", function(){
+            return band_scaler(d.name);
         })
-        .attr("width", x_scale.bandwidth)
+        .attr("width", band_scaler.bandwidth)
         .attr("height", function(d){
-            return y_scale(d.height);
+            return (d.height);
         })
         .attr("fill", function(d){
             return "grey";
